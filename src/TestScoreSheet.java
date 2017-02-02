@@ -1,17 +1,18 @@
+import org.junit.*;
+
 import static org.junit.Assert.*;
-import org.junit.Test;
-import org.junit.internal.runners.JUnit38ClassRunner;
+
 import java.util.LinkedList;
 
 public class TestScoreSheet{
 
+	
 	ScoreSheet s = new ScoreSheet();
 
 	@Test
 	public void testOneThrow(){
 		//frame 1
 		s.scoreThrow(5);
-		assertTrue (s.currentFrame.frameScore == 5);
 		assertTrue(s.score == 5);
 	}
 
@@ -40,11 +41,10 @@ public class TestScoreSheet{
 		
 		//frame 2, a spare is thrown
 		s.scoreThrow(3);
+		s.scoreThrow(7);
 		
 		//we have decided that until the next frame finishes, the score remains 10
-		assertTrue(s.currentFrame.frameScore == 10);
-		//since we just give 10 at first the overall score is 18
-		assertTrue(s.score == 18);
+		assertTrue(s.score == 10);
 				
 		//frame 3
 		//start the next frame
@@ -53,13 +53,7 @@ public class TestScoreSheet{
 		
 		//score for spare frame should be updated 
 		//UPDATE: per the directions spare frame is updated with the ENTIRE FRAMES next score not just the next throw
-		assertTrue(s.frames.get(s.currentFrameIndex-1).frameScore == 15);
-		//make sure that the current frame score is still 5
-		assertTrue(s.currentFrame.frameScore == 5);
-		
-		//overall score should be updated to reflect the spare 
-		//+5 for the next frame and +5 added to the spare
-		assertTrue(s.score == 28);
+		assertEquals(20, s.score);
 	}
 
 	@Test
@@ -69,7 +63,7 @@ public class TestScoreSheet{
 	
 	//checking that after a strike is thrown, the second throw is not given 
 	//by checking current frame is increased to 5 
-	assertTrue(s.currentFrameIndex == 5);
+	assertTrue(s.currentFrameIndex == 1);
 	
 	}
 	
