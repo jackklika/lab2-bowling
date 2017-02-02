@@ -86,7 +86,7 @@ public class TestScoreSheet{
 		//per the directions, counting the next two frames scores instead of just 1
 		
 		//test the previous frame, make sure 11 was added to the strike frame 
-		assertTrue(s.frames.get(s.currentFrameIndex-1).frameScore == 21);
+		assertTrue(s.frames.get(s.currentFrameIndex-2).frameScore == 21);
 		
 		//overall score is now 60 to account for 28 (prev total score) + 21 (strike frame score)+ 11 (next two frames) 
 		assertTrue(s.score == 60);
@@ -111,7 +111,7 @@ public class TestScoreSheet{
 		s.scoreThrow(5);
 		s.scoreThrow(5);
 		
-		//TODO change to reflect actual expected score
+		//score
 		assertTrue(s.score == 76);
 		
 	}
@@ -121,7 +121,7 @@ public class TestScoreSheet{
 	@Test
 	public void testStrikeOnLastFrames(){
 		//test throwing a strike on the 8th, 9th, and 10th frames
-		//1
+		// frame 1
 		s.scoreThrow(1);
 		s.scoreThrow(1);
 		//2
@@ -141,15 +141,31 @@ public class TestScoreSheet{
 		s.scoreThrow(1);
 		//7
 		s.scoreThrow(1);
-		s.scoreThrow(1);
-		//8, strike
+		s.scoreThrow(2);
+		
+		//score = 15
+		
+		//8, strike, score = tentatively 10, overall 25
+		//are we counting the next two frames as 30 and therefore the frame gets 40?
+		//overall 55?
 		s.scoreThrow(10);
 	
-		//9, strike
+		//9, strike, tentatively 10, overall 65?
+		//after next frame the score becomes 20 because there is only one left?
+		//overall 75?
 		s.scoreThrow(10);
 
 		//10 strike
+		//since it is the last frame does not get any bonus?
+		//overall 85
 		s.scoreThrow(10);
+		
+		//game score
+		assertTrue(s.score == 85);
+		//frame 9
+		assertTrue(s.frames.get(s.currentFrameIndex-1).frameScore == 20);
+		//frame 8
+		assertTrue(s.frames.get(s.currentFrameIndex-2).frameScore == 40);
 
 		
 	}
@@ -157,6 +173,13 @@ public class TestScoreSheet{
 	@Test
 	public void testThrowOn11thFrame(){
 		//ensure throwing on the 11th frame is not allowed (in some form)
+		try {
+			s.scoreThrow(8);
+			assertFalse("scoreThrow should have raised error",true);
+		} catch (RuntimeException e) {
+			assertTrue("exception of wrong type: " + e.getClass().getName(), e instanceof IllegalStateException);
+		}		
+		
 	}
 
 }
