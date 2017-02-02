@@ -4,7 +4,7 @@ import java.util.LinkedList;
 public class ScoreSheet {
 	public int score;
 	
-	public ScoreSheet {
+	public ScoreSheet() {
 		LinkedList<Frame> frames = new LinkedList<Frame>();{
 			for (int x = 0; x < 10; x++){
 				frames.add(new Frame());
@@ -26,7 +26,7 @@ public class ScoreSheet {
 	
 	// Calculates the current score
 	public int scoreCalculator(){
-		
+		return 0;
 	}
 	
 	
