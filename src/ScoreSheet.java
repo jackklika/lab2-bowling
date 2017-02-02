@@ -2,28 +2,25 @@ import java.util.LinkedList;
 
 
 public class ScoreSheet {
-	
+	public int score;
 	
 	// At the beginning of each frame, 10 pins are reset. 
 	// a frame may knock down a max of 10 pins
 	public class Frame {
-		public int score;
+		public int frameScore;
 		public int pins;
 		public int state;
 		
 		public Frame(){
-			
+			pins = 10;
 		}
 		
 		public class tThrow {
 			
 			public int throwNum;
-			public int pins;
-			public int state;
 			
 			// num is which throw it is, ie 1 or 2
 			public tThrow(){
-				this.pins = 10;
 				throwNum = 1;
 				state = 0;
 			}
