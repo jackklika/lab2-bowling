@@ -4,8 +4,34 @@ import java.util.LinkedList;
 public class ScoreSheet {
 	public int score;
 	
+	public ScoreSheet {
+		LinkedList<Frame> frames = new LinkedList<Frame>();{
+			for (int x = 0; x < 10; x++){
+				frames.add(new Frame());
+			}
+		}
+	}
+	
 	// At the beginning of each frame, 10 pins are reset. 
 	// a frame may knock down a max of 10 pins
+	
+	public void throwBall(int knockedDownPins){
+		// check what frame it's at
+		
+		// check the throws. If there was a first throw that was a strike, go to the next frame.
+		//    go through the whole list
+		// call the score method, go through all the frames
+		
+	}
+	
+	// Calculates the current score
+	public int scoreCalculator(){
+		
+	}
+	
+	
+	
+	
 	public class Frame {
 		public int frameScore;
 		public int pins;
@@ -13,6 +39,7 @@ public class ScoreSheet {
 		
 		public Frame(){
 			pins = 10;
+			
 		}
 		
 		public class tThrow {
@@ -57,13 +84,7 @@ public class ScoreSheet {
 		}
 		
 	}
-	
-	
-	LinkedList<Frame> frames = new LinkedList<Frame>();{
-		for (int x = 0; x < 10; x++){
-			frames.add(new Frame());
-		}
-	}
+
 	
 }
 
