@@ -11,29 +11,28 @@ public class ScoreSheet {
 	public ScoreSheet() {
 		score = 0;
 		frames = new LinkedList<Frame>();{
-			for (int x = 0; x < 10; x++){
+			for (int x = 0; x < 12; x++){ // 12 FRAMES BECAUSE WE NEED TO HANDLE A 10th FRAME STRIKE.
 				frames.add(new Frame());
 			}
 		}
-		currentFrameIndex = 1;	
+		currentFrameIndex = 0;
 	}
 	
-	// At the beginning of each frame, 10 pins are reset. 
-	// a frame may knock down a max of 10 pins
-	
-	// Should only throw the ball;
+	// Calling this method throws the ball once.
+	// Starts at the first frame, first throw. Calling this method multiple times will move to different frames.
 	public void scoreThrow(int knockedDownPins){
 		
-		
-		// check the throws. If there was a first throw that was a strike, go to the next frame.
+		// make sure the current frame is the one we want to be modifying
 		currentFrame = frames.get(currentFrameIndex);
+		currentFrame.throwBall(knockedDownPins);
 		
-		if (currentFrame.throwBall(knockedDownPins) == 3){ // is it a strike?
+		if (currentFrame.state == 3){ // a strike
 			// score
 			currentFrameIndex++;
 			return;
-		} else if (currentFrame.throwNum == 2){
-			currentFrameIndex++;			
+			
+		} else if (currentFrame.throwNum == 2){ // is a second throw
+			currentFrameIndex++;
 		}
 		
 		
@@ -43,8 +42,40 @@ public class ScoreSheet {
 	
 	// Calculates the current score
 	public int scoreCalculator(){
+
+		switch(currentFrame.state){
+		case -1:
+			System.out.println("Error -- state = -1");
+			break;
+		case 0:
+			System.out.println("pending");
+			break;
+		case 1:
+			currentFrame.frameScore = currentFrame.throw1 + currentFrame.throw2;
+			break;
+		
+		// Spare: The spare's frame's score = following frame's score + 10
+		case 2:
+			currentFrame.frameScore = 
+				currentFrame.throw1 + currentFrame.throw2 + frames.get(currentFrameIndex+1).frameScore;
+			break;
+			
+		// Strike: The strike's frame's score (ex. "frame 1") = frame 2's score + frame 3's score + 10;
+		case 3:
+			currentFrame.frameScore = 
+					currentFrame.throw1 + currentFrame.throw2 + 
+					frames.get(currentFrameIndex+1).frameScore + frames.get(currentFrameIndex+2).frameScore;
+			break;
+		default:
+			System.out.println("PROBLEM: state < -1 || state > 3");
+			break;
+		}
+		
+		
+		currentFrame.frameScore = currentFrame.throw1 + currentFrame.throw2;
 		
 		// iteration of the frames
+		currentFrameIndex++;
 		
 		return 0;
 		
@@ -52,32 +83,52 @@ public class ScoreSheet {
 	
 	
 	
-	
+	// score should go in here :)
 	public class Frame {
-		public int frameScore;
+		public int frameScore; // set by the ScoreCalculator method
 		public int pins;
 		public int state;
-		public int throwNum;
+		public int throwNum; // 1st or second throw?
+		
+		public int throw1;
+		public int throw2;
 		
 		public Frame(){
 			pins = 10;
 			throwNum = 1;
 			state = 0;
+			frameScore = 0;
 		}		
 		
 		public int throwBall(int pinsKnockedDown){				
-			pins -= pinsKnockedDown;
+			
+			
+			
+			
 			if (throwNum == 1){
+				pins -= pinsKnockedDown;
+				throwNum++;
+				
 				if (pins <= 0){
+					throw1 = 10;
 					return state = 3;
 				} else { // not a strike
-					throwNum++;
+					throw1 += pinsKnockedDown;
 					return state = 0;
 				}
+				
 			} else if (throwNum == 2){
-				if (pins <= 0){
+				if (state == 3){
+					throw2 = 0; // This is making assumptions!
+					return 3;
+				}
+				
+				pins -= pinsKnockedDown;
+				if (pins <= 0){ // spare
+					throw2 += pinsKnockedDown;
 					return state = 2;
-				} else {
+				} else { // "normal"
+					throw2 += pinsKnockedDown;
 					return state = 1;
 				}
 				
