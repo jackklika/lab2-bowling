@@ -1,6 +1,5 @@
+import java.awt.Frame;
 import java.util.LinkedList;
-
-import ScoreSheet.Frame;
 
 
 public class Main {

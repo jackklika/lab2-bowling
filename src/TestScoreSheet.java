@@ -168,7 +168,17 @@ public class TestScoreSheet{
 	public void testThrowOn11thFrame(){
 		//ensure throwing on the 11th frame is not allowed (in some form)
 		try {
-			s.scoreThrow(8);
+			s.scoreThrow(10); // 1st
+			s.scoreThrow(10); // 2nd
+			s.scoreThrow(10); // 3rd
+			s.scoreThrow(10); // 4th
+			s.scoreThrow(10); // 5th
+			s.scoreThrow(10); // 6th
+			s.scoreThrow(10); // 7th
+			s.scoreThrow(10); // 8th
+			s.scoreThrow(10); // 9th
+			s.scoreThrow(10); // 10th
+			s.scoreThrow(10); // 11th frame throw - should raise error
 			assertFalse("scoreThrow should have raised error",true);
 		} catch (RuntimeException e) {
 			assertTrue("exception of wrong type: " + e.getClass().getName(), e instanceof IllegalStateException);

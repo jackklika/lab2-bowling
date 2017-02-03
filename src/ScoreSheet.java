@@ -29,6 +29,7 @@ public class ScoreSheet {
 	// First time it is called, it throws at the first frame, frame's first throw. 
 	// Calling this method multiple times will move to different frames and throws.
 	public void scoreThrow(int knockedDownPins){
+		if (currentFrameIndex >= 10) throw new IllegalStateException();
 		System.out.println("Throwing ball, knocks down " + knockedDownPins + " pins");
 		// make sure the current frame is the one we want to be modifying
 		currentFrame = frames.get(currentFrameIndex);
