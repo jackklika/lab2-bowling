@@ -18,20 +18,22 @@ public class TestScoreSheet{
 
 	@Test
 	public void testTwoThrows(){
-		//frame 1
+		//frame 1 throw 1
 		s.scoreThrow(3);
-		//check score for this frame
-		assertTrue(s.currentFrame.frameScore == 8);
+		//frame 1 throw 2
+		s.scoreThrow(5);
 		//ScoreSheet needs an overall score var
 		assertTrue(s.score == 8);
 	}
 	
 	@Test
 	public void testThreeThrows(){
-		//frame 2
+		//frame 1 first throw
 		s.scoreThrow(7);
-		//score for this frame is 7
-		assertTrue(s.currentFrame.frameScore == 7);
+		//frame 1 second throw
+		s.scoreThrow(2);
+		// frame 2 first throw
+		s.scoreThrow(6);
 		//score for the game is 15
 		assertTrue(s.score == 15);
 	}
@@ -69,25 +71,47 @@ public class TestScoreSheet{
 	
 	@Test
 	public void testStrikeCountsNextFrameScores(){
-		//frame 5
+		//frame 1
+		s.scoreThrow(10);
+		
+		//frame 2
 		s.scoreThrow(5);
 		s.scoreThrow(4);
+		
+		//frame 3
+		s.scoreThrow(1);
+		s.scoreThrow(1);
+		
+		//overall score is now 32 to account for (10 + 9 + 2) + 9 + 2
+		assertTrue(s.score == 32);
+	}
+
+	@Test
+	public void testSpareOnLastFrame(){		
+		//frame 1
+		s.scoreThrow(1);
+		s.scoreThrow(1);
+		
+		//frame 2
+		s.scoreThrow(1);
+		s.scoreThrow(1);
+		
+		//frame 3
+		s.scoreThrow(1);
+		s.scoreThrow(1);
+				
+		//frame 4
+		s.scoreThrow(1);
+		s.scoreThrow(1);
+		
+		//frame 5
+		s.scoreThrow(1);
+		s.scoreThrow(1);
 		
 		//frame 6
 		s.scoreThrow(1);
 		s.scoreThrow(1);
 		
-		//per the directions, counting the next two frames scores instead of just 1
-		
-		//test the previous frame, make sure 11 was added to the strike frame 
-		assertTrue(s.frames.get(s.currentFrameIndex-2).frameScore == 21);
-		
-		//overall score is now 60 to account for 28 (prev total score) + 21 (strike frame score)+ 11 (next two frames) 
-		assertTrue(s.score == 60);
-	}
-
-	@Test
-	public void testSpareOnLastFrame(){		
 		//frame 7
 		s.scoreThrow(1);
 		s.scoreThrow(1);
@@ -106,7 +130,7 @@ public class TestScoreSheet{
 		s.scoreThrow(5);
 		
 		//score
-		assertTrue(s.score == 76);
+		assertTrue(s.score == 28);
 		
 	}
 	
@@ -155,11 +179,11 @@ public class TestScoreSheet{
 		s.scoreThrow(10);
 		
 		//game score
-		assertTrue(s.score == 85);
+		assertTrue(s.score == 75);
 		//frame 9
-		assertTrue(s.frames.get(s.currentFrameIndex-1).frameScore == 20);
+		assertTrue(s.frames.get(8).frameScore == 20);
 		//frame 8
-		assertTrue(s.frames.get(s.currentFrameIndex-2).frameScore == 40);
+		assertTrue(s.frames.get(7).frameScore == 30);
 
 		
 	}

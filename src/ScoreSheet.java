@@ -107,6 +107,9 @@ public class ScoreSheet {
 				f.frameScore =
 					10 + 
 					frames.get(frameIndex+1).frameScore + frames.get(frameIndex+2).frameScore;
+				
+				if (f.frameScore >= 30) f.frameScore = 30; //terrible, but our logic was recursively adding the strikes too much
+				
 				break;
 			default:
 				break;
